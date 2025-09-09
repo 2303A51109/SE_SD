@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library Management System - Singleton Pattern</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      width: 450px;
+    }
+    h1 {
+      text-align: center;
+      color: #1e293b;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #334155;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 15px;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      background: #2563eb;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
+      min-height: 80px;
+      background: #f3f4f6;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>📚 Library Management</h1>
+
+    <label for="bookTitle">Book Title</label>
+    <input type="text" id="bookTitle" placeholder="Enter book title">
+
+    <label for="bookAuthor">Author</label>
+    <input type="text" id="bookAuthor" placeholder="Enter author name">
+
+    <button onclick="addBook()">Add Book</button>
+    <button onclick="showBooks()">Show All Books</button>
+
+    <div class="output" id="output">Library is empty</div>
+  </div>
+
+  <script>
+    // ===== Singleton Pattern for Library Manager =====
+    class LibraryManager {
+      constructor() {
+        if (LibraryManager.instance) {
+          return LibraryManager.instance; // enforce singleton
+        }
+        this.books = []; // collection of books
+        LibraryManager.instance = this;
+      }
+
+      addBook(title, author) {
+        if (!title || !author) return "Please provide both title and author.";
+        this.books.push({ title, author });
+        return Book "${title}" by ${author} added successfully!;
+      }
+
+      listBooks() {
+        if (this.books.length === 0) {
+          return "No books available in the library.";
+        }
+        return this.books.map((b, i) => ${i + 1}. "${b.title}" by ${b.author}).join("\n");
+      }
+    }
+
+    // Get the singleton instance
+    const library = new LibraryManager();
+
+    // ===== Client Code =====
+    function addBook() {
+      const title = document.getElementById("bookTitle").value;
+      const author = document.getElementById("bookAuthor").value;
+      const msg = library.addBook(title, author);
+      document.getElementById("output").textContent = msg;
+      document.getElementById("bookTitle").value = "";
+      document.getElementById("bookAuthor").value = "";
+    }
+
+    function showBooks() {
+      const booksList = library.listBooks();
+      document.getElementById("output").textContent = booksList;
+    }
+  </script>
+</body>
+</html>
